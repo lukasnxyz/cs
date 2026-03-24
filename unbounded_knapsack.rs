@@ -1,4 +1,3 @@
-// unbounded knapsack problem
 fn count_change(money: i32, coins: &[i32]) -> i32 {
   match (money, coins) {
     (0, _) => 1,
