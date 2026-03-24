@@ -23,47 +23,37 @@ use std::cmp::PartialOrd;
 fn isort<T: Copy + PartialOrd>(ns: &[T]) -> Vec<T> {
   fn compare<T: Copy + PartialOrd>(e: T, xs: &[T]) -> Vec<T> {
     match xs {
-      []                => vec![e],
-      [head, tail @ ..] => {
-        if e <= *head {
-          std::iter::once(e).chain(xs.iter().copied()).collect()
-        } else {
-          std::iter::once(*head).chain(compare(e, tail)).collect()
-        }
-      }
+      [] =>
+        vec![e],
+      [head, _tail @ ..] if e <= *head =>
+        std::iter::once(e)
+          .chain(xs.iter().copied())
+          .collect(),
+      [head, tail @ ..] =>
+        std::iter::once(*head)
+          .chain(compare(e, tail))
+          .collect(),
     }
   }
 
   match ns {
-    []                => vec![],
-    [head, tail @ ..] => compare(*head, &isort(tail))
+    [] =>
+      vec![],
+    [head, tail @ ..] =>
+      compare(*head, &isort(tail)),
   }
 }
 
 fn main() {
-  assert_eq!(
-    isort(&[5,4,3,2,1]),
-    &[1,2,3,4,5],
-  );
+  assert_eq!(isort(&[5,4,3,2,1]), &[1,2,3,4,5]);
   assert_eq!(
     isort(&[345,19283,11,200,389283]),
     &[11,200,345,19283,389283],
   );
+  assert_eq!(isort(&[2,5,7,4,1,3]), &[1,2,3,4,5,7]);
 
   assert_eq!(
     isort(&['b','r','t','a','i','s']),
     &['a','b','i','r','s','t'],
-  );
-
-  let test = &[2,5,7,4,1,3];
-  let sorted = isort(test);
-  println!("before sort: {:?}, after sort: {:?}",
-    test, sorted
-  );
-
-  let test = &['b','r','t','a','i','s'];
-  let sorted = isort(test);
-  println!("before sort: {:?}, after sort: {:?}",
-    test, sorted
   );
 }
