@@ -17,11 +17,22 @@
    [1,2,3,4,5]
 */
 
-use std::marker::Copy;
-use std::cmp::PartialOrd;
+/*
+The whole 'std::iter::once(e).chain(xs.iter().copied()).collect()'
+is equivalent to:
+  {
+    let mut v = Vec::new();
+    v.push(e);
+    v.extend(xs);
+    v
+  }
+*/
 
-fn isort<T: Copy + PartialOrd>(ns: &[T]) -> Vec<T> {
-  fn compare<T: Copy + PartialOrd>(e: T, xs: &[T]) -> Vec<T> {
+use std::marker::Copy;
+use std::cmp::Ord;
+
+fn isort<T: Copy + Ord>(ns: &[T]) -> Vec<T> {
+  fn compare<T: Copy + Ord>(e: T, xs: &[T]) -> Vec<T> {
     match xs {
       [] =>
         vec![e],
