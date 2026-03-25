@@ -55,28 +55,33 @@ fn isort<T: Copy + Ord>(ns: &[T]) -> Vec<T> {
   }
 }
 
-#[test]
-fn test_isort_1() {
-  assert_eq!(isort(&[5,4,3,2,1]), &[1,2,3,4,5]);
-}
+#[cfg(test)]
+mod tests {
+  use super::*;
 
-#[test]
-fn test_isort_2() {
-  assert_eq!(
-    isort(&[345,19283,11,200,389283]),
-    &[11,200,345,19283,389283],
-  );
-}
+  #[test]
+  fn test_isort_1() {
+    assert_eq!(isort(&[5,4,3,2,1]), &[1,2,3,4,5]);
+  }
 
-#[test]
-fn test_isort_3() {
-  assert_eq!(isort(&[2,5,7,4,1,3]), &[1,2,3,4,5,7]);
-}
+  #[test]
+  fn test_isort_2() {
+    assert_eq!(
+      isort(&[345,19283,11,200,389283]),
+      &[11,200,345,19283,389283],
+    );
+  }
 
-#[test]
-fn test_isort_4() {
-  assert_eq!(
-    isort(&['b','r','t','a','i','s']),
-    &['a','b','i','r','s','t'],
-  );
+  #[test]
+  fn test_isort_3() {
+    assert_eq!(isort(&[2,5,7,4,1,3]), &[1,2,3,4,5,7]);
+  }
+
+  #[test]
+  fn test_isort_4() {
+    assert_eq!(
+      isort(&['b','r','t','a','i','s']),
+      &['a','b','i','r','s','t'],
+    );
+  }
 }
