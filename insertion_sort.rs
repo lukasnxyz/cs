@@ -31,6 +31,26 @@ is equivalent to:
 use std::marker::Copy;
 use std::cmp::Ord;
 
+/*
+fn isort<T: Copy + Ord>(ns: &[T]) -> Vec<T> {
+  let insert = |e: T, xs: &[T]| {
+    let pos = xs.iter().position(|x| e <= *x).unwrap_or(xs.len());
+
+    xs[..pos]
+      .iter()
+      .copied()
+      .chain(std::iter::once(e))
+      .chain(xs[pos..].iter().copied())
+      .collect()
+  };
+
+  match ns {
+    [] => vec![],
+    [head, tail @ ..] => insert(*head, &isort(tail)),
+  }
+}
+*/
+
 fn isort<T: Copy + Ord>(ns: &[T]) -> Vec<T> {
   fn compare<T: Copy + Ord>(e: T, xs: &[T]) -> Vec<T> {
     match xs {
@@ -42,16 +62,14 @@ fn isort<T: Copy + Ord>(ns: &[T]) -> Vec<T> {
           .collect(),
       [head, tail @ ..] =>
         std::iter::once(*head)
-          .chain(compare(e, tail))
+          .chain(compare(e, tail).into_iter())
           .collect(),
     }
   }
 
   match ns {
-    [] =>
-      vec![],
-    [head, tail @ ..] =>
-      compare(*head, &isort(tail)),
+    []                => vec![],
+    [head, tail @ ..] => compare(*head, &isort(tail)),
   }
 }
 
